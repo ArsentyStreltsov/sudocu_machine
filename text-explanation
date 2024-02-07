@@ -1,0 +1,16 @@
+I decided to create an application for working with Sudoku. At the moment, the system can perform 2 key functions:
+1 - solve Sudoku yourself, based on the well-known rules of this game
+2 - check the user's solution entered into the cells
+The main idea behind the program is to substitute all possible values into the cells and select only those that match the condition.
+I used several libraries, but the 2 main ones are NymPy and Flask. In total, they help the program carry out calculations, receive and send data to the server to display it on the user’s screen.
+
+If we talk about how the program works, the logic is quite simple:
+As a user on the site, if I want to ask the system to solve my Sudoku, I can enter the known values of the cells and click on the "Solve" button. After which, the data will be sent to the server, the program will run it through the algorithm described above and send the result back to the server so that it is displayed on the user’s screen
+Also, if the user wants to check his Sudoku solution, then after filling out all the cells, he can click on the “Check” button so that, using the same system, the program checks the data for its veracity and sends a message with congratulations or with an error in Sudoku.
+
+The system also provides error outputs to the console if something goes wrong. This applies to both incorrectly entered data from the user and system errors in other places
+
+To ensure greater ease of use of the site, you can navigate through the Sudoku cells using the arrows on the keyboard, and there is also easy-to-eye highlighting of the active column, line and 3x3 square. Also, the system will not allow the user to enter values other than numbers in order to avoid an additional number of errors when processing information.
+
+If we talk about the future, then the site can also add different sections for the game. For example, you can add already composed Sudoku puzzles so that the user can solve and check them. Thanks to this, it is possible to implement a rating system, distributing points to players for correctly solving Sudoku
+You can also write code that will generate Sudoku puzzles at different difficulty levels. For example, you can ask him to fill all the cells of a Sudoku, remove some of them, and run a counter to measure how many cycles it took to solve the Sudoku. Thus allowing me to sort the resulting sudoku puzzles into different difficulty levels
