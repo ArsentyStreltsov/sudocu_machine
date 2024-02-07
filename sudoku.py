@@ -1,74 +1,58 @@
-import numpy as np
+import numpy as np  # the NumPy library is imported, which provides the array and matrix functionality used in this code
 
-# Функция для создания пустой доски судоку
-def create_sudoku_board():
-    return np.zeros((9, 9), dtype=int)
+def create_sudoku_board():  # Function to create an empty Sudoku board
+    return np.zeros((9, 9), dtype=int)  # creates a 9x9 array filled with zeros, where each zero represents an empty cell in Sudoku. also indicates that the data type in the array is integers.
 
-# Функция для проверки правил судоку
-def is_valid_move(board, row, col, num):
-    # Проверка по горизонтали и вертикали
-    if num in board[row] or num in board[:, col]:
-        return False
+def is_valid_move(board, row, col, num):  # Function for checking Sudoku rules
+    if num in board[row] or num in board[:, col]:  # Checks whether num is in the current row or in the current column col.
+        return False  #  If yes, False is returned.
+    start_row, start_col = 3 * (row // 3), 3 * (col // 3)  # Specifies the starting row and column of the 3x3 block that the cell falls into.
+    if num in board[start_row:start_row+3, start_col:start_col+3]:  # Checks if num is present inside a 3x3 block.
+        return False  # If yes, False is returned.
+    return True  # If all checks pass, True is returned, i.e. the number num can be placed in the specified cell.
 
-    # Проверка внутри 3x3 блока
-    start_row, start_col = 3 * (row // 3), 3 * (col // 3)
-    if num in board[start_row:start_row+3, start_col:start_col+3]:
-        return False
-
-    return True
-
-# Функция для решения судоку с использованием рекурсии
-def solve_sudoku(board):
-    # Если board является списком, преобразуем его в массив NumPy
-    if isinstance(board, list):
+def solve_sudoku(board):  # Function for solving Sudoku using recursion
+    if isinstance(board, list):  # Converts a board from a list of lists to a NumPy array if it is not already in that format.
         board = np.array(board)
     
-    # Найти пустую ячейку
-    empty_cell = find_empty_cell(board)
-    if empty_cell is None:
-        return board  # Возвращаем решенную доску
-    row, col = empty_cell
+    empty_cell = find_empty_cell(board)  # Finds the first empty cell on the board.
+    if empty_cell is None:  # If there are no empty cells,
+        return board  # returns the solved board.
+    
+    row, col = empty_cell  # Unpacks the coordinates of an empty cell.
 
-    for num in range(1, 10):
-        if is_valid_move(board, row, col, num):
-            board[row, col] = num
-            if solve_sudoku(board) is not False:
-                return board
-            board[row, col] = 0
+    for num in range(1, 10):  # Tries to place all numbers from 1 to 9 in an empty cell.
+        if is_valid_move(board, row, col, num):  # Checks whether placing the number num will violate the rules of Sudoku.
+            board[row, col] = num  # Places num in the cell if valid.
+            if solve_sudoku(board) is not False:  # Recursively tries to solve Sudoku with a new number on the board. 
+                return board  # Returns the board if a solution is found.
+            board[row, col] = 0  # Resets the cell to 0 (empty) if a solution is not found with the current num.
 
-    return False
+    return False  # Returns False if a solution cannot be found.
 
-# Функция для поиска пустой ячейки на доске
-def find_empty_cell(board):
-    for row in range(9):
-        for col in range(9):
+def find_empty_cell(board):  # Function to find an empty cell on the board
+    for row in range(9):  # Iterates through all rows and 
+        for col in range(9):  # columns of the board.
             if board[row, col] == 0:
-                return row, col
-    return None
+                return row, col  # Returns the coordinates of the first empty cell. 
+    return None  # Returns None if there are no empty cells.
 
-
-
-def check_sudoku_solution(board):
-    # Проверяем, является ли входной параметр массивом NumPy, если нет - преобразуем
-    if not isinstance(board, np.ndarray):
-        board = np.array(board)
+def check_sudoku_solution(board):  # Function for checking the solution of Sudoku
+    if not isinstance(board, np.ndarray):  # Converts the board to a NumPy array 
+        board = np.array(board)  # if it is not already in that format.
     
-    # Перебираем все строки и столбцы
-    for i in range(9):
-        row = board[i, :]
-        if not np.all(np.sort(row) == np.arange(1, 10)):
-            return False  # Если условие не выполняется, возвращаем False
-
+    for i in range(9):  # Iterates through all rows and columns to check.
+        row = board[i, :]  # Checks whether each string contains all numbers 
+        if not np.all(np.sort(row) == np.arange(1, 10)):  # from 1 to 9 without repetitions.
+            return False
         col = board[:, i]
-        if not np.all(np.sort(col) == np.arange(1, 10)):
-            return False  # Если условие не выполняется, возвращаем False
+        if not np.all(np.sort(col) == np.arange(1, 10)):  # Does the same for each column.
+            return False
 
-    # Перебираем все 3x3 блоки
-    for i in range(0, 9, 3):
+    for i in range(0, 9, 3):  # Does the same for each 3х3 block.
         for j in range(0, 9, 3):
-            block = board[i:i+3, j:j+3].flatten()
-            if not np.all(np.sort(block) == np.arange(1, 10)):
-                return False  # Если условие не выполняется, возвращаем False
+            block = board[i:i+3, j:j+3].flatten()  # Converts a 3x3 block to a one-dimensional array.
+            if not np.all(np.sort(block) == np.arange(1, 10)):  # Checks if the block contains all numbers from 1 to 9 without repetitions.
+                return False
 
-    return True  # Если все проверки пройдены успешно, возвращаем True
-
+    return True  # Returns True if all checks pass successfully.

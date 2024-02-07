@@ -1,3 +1,5 @@
+<!-- I dont think there are many comments needed for HTML&CSS :) -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +10,15 @@
 </head>
 
 <body>
-  <h1>Sudoku Solver</h1>
+  <h1>Sudoku</h1>
   <form id="sudoku-form">
     <div id="sudoku-grid">
     </div>
-    <button type="button" onclick="solveSudoku()">Solve</button>
-    
-    <button type="button" onclick="checkSudoku()">Check</button>
+    <div class="buttons">
+      <button type="button" onclick="solveSudoku()">Solve</button>
+
+      <button type="button" onclick="checkSudoku()">Check</button>
+    </div>
 
   </form>
   <script src="static/sudoku_java.js"></script>

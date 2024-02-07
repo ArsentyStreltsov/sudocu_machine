@@ -1,3 +1,5 @@
+/* I dont think there are many comments needed for HTML&CSS :) */
+
 :root {
   --background-color: #f0f0f0;
   --button-color: #008cba;
@@ -81,5 +83,5 @@ button:hover {
 }
 
 #sudoku-grid input.highlight {
-    background-color: rgb(227, 236, 243);
-  }
+  background-color: rgb(227, 236, 243);
+}
