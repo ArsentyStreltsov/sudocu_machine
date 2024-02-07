@@ -53,26 +53,26 @@ function handleArrowKeys(event, index) {
 }
 
 function highlight() {
-  console.log('Element focused'); // Добавлено для отладки
+  // console.log('Element focused'); // Добавлено для отладки
   highlightRowColSquare(this, true);
 }
 
 function unhighlight() {
-  console.log('Element unfocused'); // Добавлено для отладки
+  // console.log('Element unfocused'); // Добавлено для отладки
   highlightRowColSquare(this, false);
 }
 
 function highlightRowColSquare(element, add) {
   const index = Array.from(grid.children).indexOf(element);
-  console.log('Index of element:', index); // Добавлено для отладки
+  // console.log('Index of element:', index); // Добавлено для отладки
 
   const row = Math.floor(index / 9);
   const col = index % 9;
-  console.log('Row:', row, 'Col:', col); // Добавлено для отладки
+  // console.log('Row:', row, 'Col:', col); // Добавлено для отладки
 
   const startRow = row - row % 3;
   const startCol = col - col % 3;
-  console.log('Square start - Row:', startRow, 'Col:', startCol); // Добавлено для отладки
+  // console.log('Square start - Row:', startRow, 'Col:', startCol); // Добавлено для отладки
 
   for (let i = 0; i < 9; i++) {
     // Toggle class 'highlight' for row and column
@@ -136,3 +136,43 @@ function solveSudoku() {
 }
 
 
+
+function checkSudoku() {
+  const values = [];
+  const cells = document.querySelectorAll('#sudoku-grid input');
+  for (let i = 0; i < 9; i++) {
+    const row = [];
+    for (let j = 0; j < 9; j++) {
+      const index = i * 9 + j;
+      const cellValue = cells[index].value === '' ? 0 : parseInt(cells[index].value, 10);
+      row.push(cellValue);
+    }
+    values.push(row);
+  }
+
+  const data = { 'board': values };
+  fetch('/check', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(result => {
+      if (result.valid) {
+        alert('Congratulations! Your solution is correct.');
+      } else {
+        alert('Sorry, your solution is not correct. Please try again.');
+      }
+    })
+    .catch(error => {
+      console.error('Ошибка:', error);
+      alert('Произошла ошибка при обработке вашего запроса. Пожалуйста, проверьте консоль для подробностей.');
+    });
+}

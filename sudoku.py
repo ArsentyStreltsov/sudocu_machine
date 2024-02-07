@@ -45,3 +45,30 @@ def find_empty_cell(board):
             if board[row, col] == 0:
                 return row, col
     return None
+
+
+
+def check_sudoku_solution(board):
+    # Проверяем, является ли входной параметр массивом NumPy, если нет - преобразуем
+    if not isinstance(board, np.ndarray):
+        board = np.array(board)
+    
+    # Перебираем все строки и столбцы
+    for i in range(9):
+        row = board[i, :]
+        if not np.all(np.sort(row) == np.arange(1, 10)):
+            return False  # Если условие не выполняется, возвращаем False
+
+        col = board[:, i]
+        if not np.all(np.sort(col) == np.arange(1, 10)):
+            return False  # Если условие не выполняется, возвращаем False
+
+    # Перебираем все 3x3 блоки
+    for i in range(0, 9, 3):
+        for j in range(0, 9, 3):
+            block = board[i:i+3, j:j+3].flatten()
+            if not np.all(np.sort(block) == np.arange(1, 10)):
+                return False  # Если условие не выполняется, возвращаем False
+
+    return True  # Если все проверки пройдены успешно, возвращаем True
+
